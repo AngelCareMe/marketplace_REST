@@ -1,0 +1,462 @@
+{
+  "info": {
+    "name": "Marketplace API Tests",
+    "_postman_id": "c7b9e6b2-9a7f-4f0f-b5e7-7b8f9e8b6f1a",
+    "description": "Test collection for Marketplace REST API based on router.go",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Register User",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+              "var jsonData = pm.response.json();",
+              "if (jsonData.user && jsonData.user.id) {",
+              "    pm.environment.set('user_id', jsonData.user.id);",
+              "    console.log('User ID saved: ' + jsonData.user.id);",
+              "}",
+              "if (jsonData.token) {",
+              "    pm.environment.set('auth_token', jsonData.token);",
+              "    console.log('Token saved: ' + jsonData.token);",
+              "}"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"username\":\"testuser\",\"password\":\"Test1234!\"}"
+        },
+        "url": {
+          "raw": "{{base_url}}/users/register",
+          "host": ["{{base_url}}"],
+          "path": ["users", "register"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Login User",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+              "var jsonData = pm.response.json();",
+              "if (jsonData.user && jsonData.user.id) {",
+              "    pm.environment.set('user_id', jsonData.user.id);",
+              "    console.log('User ID saved: ' + jsonData.user.id);",
+              "}",
+              "if (jsonData.token) {",
+              "    pm.environment.set('auth_token', jsonData.token);",
+              "    console.log('Token saved: ' + jsonData.token);",
+              "}"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"username\":\"testuser\",\"password\":\"Test1234!\"}"
+        },
+        "url": {
+          "raw": "{{base_url}}/users/login",
+          "host": ["{{base_url}}"],
+          "path": ["users", "login"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get User",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{auth_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/users/{{user_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["users", "{{user_id}}"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update User",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{auth_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"username\":\"updateduser\",\"password\":\"NewPass1234!\"}"
+        },
+        "url": {
+          "raw": "{{base_url}}/users/{{user_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["users", "{{user_id}}"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete User",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{auth_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/users/{{user_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["users", "{{user_id}}"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Post",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200 or 201', function () { pm.response.to.have.status([200, 201]); });",
+              "var jsonData = pm.response.json();",
+              "if (jsonData.id) {",
+              "    pm.environment.set('post_id', jsonData.id);",
+              "    console.log('Post ID saved: ' + jsonData.id);",
+              "}"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{auth_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"header\":\"Test Post\",\"content\":\"This is a test post content\",\"image\":\"https://example.com/image.jpg\",\"price\":99.99}"
+        },
+        "url": {
+          "raw": "{{base_url}}/posts",
+          "host": ["{{base_url}}"],
+          "path": ["posts"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Edit Post",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{auth_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"header\":\"Updated Test Post\",\"content\":\"Updated content\",\"image\":\"https://example.com/updated_image.jpg\",\"price\":149.99}"
+        },
+        "url": {
+          "raw": "{{base_url}}/posts/{{post_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["posts", "{{post_id}}"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Post",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{auth_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/posts/{{post_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["posts", "{{post_id}}"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Post",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200 or 404', function () { pm.response.to.have.status([200, 404]); });",
+              "var jsonData = pm.response.json();",
+              "if (pm.response.code === 404) {",
+              "    console.log('Post not found: ' + jsonData.error);",
+              "}"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/posts/{{post_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["posts", "{{post_id}}"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "List Posts",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/posts?page=1&pageSize=10&sortBy=created_at%20DESC",
+          "host": ["{{base_url}}"],
+          "path": ["posts"],
+          "query": [
+            {
+              "key": "page",
+              "value": "1"
+            },
+            {
+              "key": "pageSize",
+              "value": "10"
+            },
+            {
+              "key": "sortBy",
+              "value": "created_at DESC"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "List Posts by User",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{auth_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/users/{{user_id}}/posts?page=1&pageSize=10&sortBy=created_at%20DESC",
+          "host": ["{{base_url}}"],
+          "path": ["users", "{{user_id}}", "posts"],
+          "query": [
+            {
+              "key": "page",
+              "value": "1"
+            },
+            {
+              "key": "pageSize",
+              "value": "10"
+            },
+            {
+              "key": "sortBy",
+              "value": "created_at DESC"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "auth_token",
+      "value": ""
+    },
+    {
+      "key": "post_id",
+      "value": "377aa42d-ee57-4d78-a08c-5dd19decc0e0"
+    },
+    {
+      "key": "user_id",
+      "value": "82256c7d-5bf8-4573-8613-b5560de0df4a"
+    }
+  ]
+}

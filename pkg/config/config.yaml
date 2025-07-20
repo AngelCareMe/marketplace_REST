@@ -1,0 +1,17 @@
+database:
+  user: user
+  password: password
+  host: postgres
+  port: 5432
+  dbname: marketplace
+  sslmode: disable
+server:
+  port: ":8080"
+logger:
+  level: info
+  format: json
+migrations:
+  dir: ./migrations
+  enabled: true
+jwt:
+  secret_key: your-secure-secret-key
